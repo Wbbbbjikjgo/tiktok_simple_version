@@ -12,7 +12,7 @@ import (
 func FeedService(idInt64 int64, latestTimeInt64 int64) (videoList []domain.Video, nextTimeInt64 int64) {
 	//将int64格式时间戳转为Time.time类型，以保证和数据库类型一致
 	timeStamp := time.UnixMilli(idInt64)
-	dao.DB.Model(&domain.Video{}).
+	dao.DB.Model(&domain.Video{}).Preload("Author").
 		Where("creat_time <= ?", timeStamp).
 		Order("creat_time desc"). //该字段应该建一个索引提高效率
 		Limit(3).                 //文档要求为30，这里设置小一点方便测试
@@ -28,7 +28,6 @@ func FeedService(idInt64 int64, latestTimeInt64 int64) (videoList []domain.Video
 	nextTimeInt64 = videoList[len(videoList)-1].CreatTime.UnixMilli() - 1
 
 	for _, video := range videoList {
-
 		// TODO 丰富Video的额外字段，例如author
 
 		//查出每个视频对于当前用户的喜欢状态，已经视频作者的关注状态
@@ -42,7 +41,7 @@ func FeedService(idInt64 int64, latestTimeInt64 int64) (videoList []domain.Video
 
 			if isLiked {
 				//如果当前用户的点赞set中含有当前视频
-				video.IsLiked = true
+				video.IsFavorite = true
 			}
 
 			//类似的，上面是点赞，这里是关注

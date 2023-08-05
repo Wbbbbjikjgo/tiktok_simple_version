@@ -21,13 +21,14 @@ func InitDB() {
 
 	//datasource
 	dsn := "root:123456@tcp(localhost:3306)/" +
-		"ticktok?charset=utf8mb4&interpolateParams=true&parseTime=True&loc=Local"
+		"tiktok?charset=utf8mb4&interpolateParams=true&parseTime=True&loc=Local"
 	var err error
 
 	DB, err = gorm.Open(mysql.Open(dsn), &gorm.Config{
 		PrepareStmt: true,
 	})
 	if err != nil {
+		log.Println("InitDB中数据库初始化失败！")
 		panic(err)
 	}
 
@@ -39,9 +40,9 @@ func InitDB() {
 	}
 	// 创建 Redis 客户端配置
 	redisConfig := &redis.Options{
-		Addr:     "localhost:6379", // Redis 服务器地址和端口
-		Password: "",               // Redis 认证密码，如果没有密码则为空字符串
-		DB:       0,                // 选择使用的数据库，默认为 0
+		Addr:     "192.168.157.128:6379", // Redis 服务器地址和端口
+		Password: "123456",               // Redis 认证密码，如果没有密码则为空字符串
+		DB:       0,                      // 选择使用的数据库，默认为 0
 	}
 
 	// 初始化 Redis 客户端
