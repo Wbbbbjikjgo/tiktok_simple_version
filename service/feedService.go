@@ -42,7 +42,7 @@ func FeedService(idInt64 int64, latestTimeInt64 int64) (videoList []domain.Video
 
 			if isLiked {
 				//如果当前用户的点赞set中含有当前视频
-				video.IsLiked = true
+				video.IsFavorite = true
 			}
 
 			//类似的，上面是点赞，这里是关注

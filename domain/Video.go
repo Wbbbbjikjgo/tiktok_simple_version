@@ -3,7 +3,7 @@ package domain
 import "time"
 
 type Video struct {
-	IsLiked       bool      `json:"is_favorite,omitempty" gorm:"-"`
+	IsFavorite    bool      `json:"is_favorite,omitempty" gorm:"-"`
 	Id            int64     `json:"id,omitempty" gorm:"primaryKey"`
 	AuthorId      int64     `json:"-"`
 	FavoriteCount int64     `json:"favorite_count,omitempty"`
