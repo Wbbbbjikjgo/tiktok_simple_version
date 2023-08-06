@@ -1,15 +1,13 @@
 package main
 
 import (
-	"fmt"
 	"github.com/gin-gonic/gin"
-	"github.com/goTouch/TicTok_SimpleVersion/dao"
 )
 
 func main() {
 
-	dao.InitDB()
-	fmt.Print("数据库执行成功")
+	/*dao.InitDB()
+	fmt.Print("数据库执行成功")*/
 
 	//go service.RunMessageServer()
 

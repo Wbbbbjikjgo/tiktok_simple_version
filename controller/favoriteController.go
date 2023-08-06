@@ -7,6 +7,7 @@ import (
 )
 
 // FavoriteAction no practical effect, just check if token is valid
+//前端接口文档中，有token，videoId，actionType(是否点赞)三个参数，利用好
 func FavoriteAction(c *gin.Context) {
 	token := c.Query("token")
 
