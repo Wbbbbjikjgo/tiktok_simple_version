@@ -3,6 +3,7 @@ module github.com/goTouch/TicTok_SimpleVersion
 go 1.17
 
 require (
+	github.com/bwmarrin/snowflake v0.3.0
 	github.com/gavv/httpexpect/v2 v2.8.0
 	github.com/gin-gonic/gin v1.7.7
 	github.com/go-redis/redis/v8 v8.11.5

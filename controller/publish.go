@@ -10,11 +10,8 @@ import (
 
 // 既然是发布视频，首先需要校验token，登入的问题
 
-type VideoListResponse struct {
-	domain.Response
-	VideoList []domain.Video `json:"video_list"`
-}
-
+//下面代码为demo示例。可删除
+//*******************************************************************************************************//
 // Publish check token then save upload file to public directory
 func Publish(c *gin.Context) {
 	token := c.PostForm("token")
@@ -54,7 +51,7 @@ func Publish(c *gin.Context) {
 
 // PublishList all users have same publish videos list
 func PublishList(c *gin.Context) {
-	c.JSON(http.StatusOK, VideoListResponse{
+	c.JSON(http.StatusOK, domain.VideoListResponse{
 		Response: domain.Response{
 			StatusCode: 0,
 		},
