@@ -14,10 +14,10 @@ func FeedService(userIdInt64 int64, latestTimeInt64 int64) (videoList []domain.V
 	//将int64格式时间戳转为Time.time类型，以保证和数据库类型一致
 	timeStamp := time.UnixMilli(userIdInt64)
 	dao.DB.Model(&domain.Video{}).Preload("Author").
-		Where("creat_time <= ?", timeStamp).
-		Order("creat_time desc"). //该字段应该建一个索引提高效率
-		Limit(3).                 //文档要求为30，这里设置小一点方便测试
-		Find(&videoList)          //保存到videoList中，最后返回给controller
+		Where("creat_time >= ?", timeStamp). // TODO 斟酌一下> 还是<
+		Order("creat_time desc").            //该字段应该建一个索引提高效率
+		Limit(3).                            //文档要求为30，这里设置小一点方便测试
+		Find(&videoList)                     //保存到videoList中，最后返回给controller
 
 	if len(videoList) == 0 {
 		log.Println("FeedService查询数据库查到0条记录")
