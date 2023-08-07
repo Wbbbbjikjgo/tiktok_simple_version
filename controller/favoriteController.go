@@ -13,7 +13,7 @@ import (
 // FavoriteAction no practical effect, just check if token is valid
 //前端接口文档中，前端有带有token，videoId，actionType(1表示点赞，2表示取消点赞)三个参数，利用好
 func FavoriteAction(c *gin.Context) {
-	//实现点赞三个数据是必要的，点赞用户的id（从token中拿），点赞视频的id，是否点赞
+	//实现点赞三个数据是必要的，点赞用户的id（从token中，或者gin context拿？），点赞视频的id，是否点赞
 
 	//验证token，合法的话返回userId
 	userIdInt64, err := util.VerifyTokenReturnUserIdInt64(c)
@@ -36,15 +36,25 @@ func FavoriteAction(c *gin.Context) {
 		return
 	}
 
-	service.Favorite(videoIdInt64, userIdInt64, int32(actionType))
+	err = service.Favorite(videoIdInt64, userIdInt64, int32(actionType))
+	if err != nil {
+		c.JSON(http.StatusOK, domain.Response{StatusCode: 1, StatusMsg: err.Error()})
+	} else if err == nil {
+		c.JSON(http.StatusOK, domain.Response{StatusCode: 0, StatusMsg: "点赞成功"})
+	}
 }
 
-// FavoriteList all users have same favorite videos list
+// FavoriteList 登录用户的所有点赞视频。
+//request 中有token和user_id，可以直接拿
 func FavoriteList(c *gin.Context) {
-	c.JSON(http.StatusOK, domain.VideoListResponse{
-		Response: domain.Response{
-			StatusCode: 0,
-		},
-		VideoList: DemoVideos,
-	})
+	userIdStr := c.Query("user_id") //取出来是string类型！
+	userIdInt64, err := strconv.ParseInt(userIdStr, 10, 64)
+	if err != nil {
+		c.JSON(http.StatusOK, domain.VideoListResponse{
+			Response:  domain.Response{StatusCode: 1, StatusMsg: err.Error()},
+			VideoList: nil,
+		})
+	}
+	service.FavoriteList(userIdInt64)
+
 }

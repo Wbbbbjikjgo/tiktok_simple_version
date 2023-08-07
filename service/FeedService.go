@@ -6,6 +6,7 @@ import (
 	"github.com/goTouch/TicTok_SimpleVersion/domain"
 	"github.com/goTouch/TicTok_SimpleVersion/util"
 	"log"
+	"strconv"
 	"time"
 )
 
@@ -33,13 +34,13 @@ func FeedService(userIdInt64 int64, latestTimeInt64 int64) (videoList []domain.V
 		//查出每个视频对于当前用户的喜欢状态，已经视频作者的关注状态
 		//注意前提是登入才能处理
 		if userIdInt64 != 0 { //已登入
-			//redis HSet类型, key主要是当前访问用户的id，val是当前访问用户点赞的各个视频id
+			//redis Set类型, key主要是当前访问用户的id，val是当前访问用户点赞的各个视频id
 			// TODO 关注一下Hset保存以上信息的地方，下面是直接取出了
-			isLiked := dao.RedisClient.
-				SIsMember(context.Background(), util.VideoLikedKey+string(userIdInt64), video.Id).
+			isFavorite := dao.RedisClient.
+				SIsMember(context.Background(), util.VideoFavoriteKey+strconv.FormatInt(userIdInt64, 10), video.Id).
 				Val()
 
-			if isLiked {
+			if isFavorite {
 				//如果当前用户的点赞set中含有当前视频
 				video.IsFavorite = true
 			}
